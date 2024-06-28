@@ -257,6 +257,10 @@ impl EnclaveArtifactBuilder {
                         &img_tag,
                         "--output-file",
                         eif_name,
+                        "--private-key",
+                        "/opt/fortress/fortress-key.pem",
+                        "--signing-certificate",
+                        "/opt/fortress/fortress-cert.pem",
                     ]),
                     attach_stderr: Some(true),
                     attach_stdout: Some(true),
@@ -272,6 +276,13 @@ impl EnclaveArtifactBuilder {
                                 typ: Some(MountTypeEnum::BIND),
                                 source: Some(build_dir_path.into()),
                                 target: Some(String::from("/build")),
+                                ..Default::default()
+                            },
+                            // TODO - not sure if this is needed
+                            Mount {
+                                typ: Some(MountTypeEnum::VOLUME),
+                                source: Some(String::from("/opt/fortress")),
+                                target: Some(String::from("/opt/fortress")),
                                 ..Default::default()
                             },
                         ]),
